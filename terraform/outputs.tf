@@ -10,11 +10,6 @@ output "image_container_name" {
   value = azurerm_storage_container.image-container.name
 }
 
-output "image_storage_account_sas_url" {
-  value     = "?${azurerm_storage_account_sas.image_sas.sas}"
-  sensitive = true
-}
-
 output "image_storage_primary_blob_endpoint" {
   value     = azurerm_storage_account.image-storage.primary_blob_endpoint
   sensitive = false
