@@ -7,11 +7,6 @@ packer {
   }
 }
 
-variable "location" {
-  type    = "string"
-  default = "uksouth"
-}
-
 source "azure-arm" "win11" {
   tenant_id       = "$${env ARM_TENANT_ID}"
   subscription_id = "$${env ARM_SUBSCRIPTION_ID}"
@@ -21,7 +16,7 @@ source "azure-arm" "win11" {
   # application has a federated credential for the repository; Packer will
   # use the OIDC token exchange instead of client credentials.
 
-  location                          = var.location
+  location                          = "UK South"
   vm_size                           = "Standard_D4s_v3"
   image_publisher                   = "MicrosoftWindowsDesktop"
   image_offer                       = "windows-11"
