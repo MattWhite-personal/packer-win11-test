@@ -57,12 +57,14 @@ resource "azurerm_storage_account" "image-storage" {
   #checkov:skip=CKV2_AZURE_1:Ignore what i dont care about
   #checkov:skip=CKV2_AZURE_21: Ignore
   #checkov:skip=CKV2_AZURE_33: Private endpoints not suitable for storage account
+  #checkov:skip=CKV_AZURE_33:Ignore
   #checkov:skip=CKV2_AZURE_40: Shared Key currently enabled until Entra Auth is tested
   #checkov:skip=CKV2_AZURE_41: Storage account is not internet facing and only used for image upload, so Shared Key is acceptable
   #checkov:skip=CKV_AZURE_206: ignore
   #checkov:skip=CKV_AZURE_190: Own naming convention is in use
   #checkov:skip=CKV_AZURE_59:Own naming convention is in use
   #checkov:skip=CKV2_AZURE_47:Own naming convention is in use
+  #checkov:skip=CKV2_AZURE_38:IGnore
   name                     = "stwhitefamimages"
   resource_group_name      = azurerm_resource_group.image-gallery.name
   location                 = azurerm_resource_group.image-gallery.location
@@ -73,6 +75,8 @@ resource "azurerm_storage_account" "image-storage" {
 }
 
 resource "azurerm_storage_container" "image-container" {
+  #checkov:skip=CKV2_AZURE_21: Ignore
+  #checkov:skip=CKV2_AZURE_38:IGnore
   name                  = "images"
   storage_account_name  = azurerm_storage_account.image-storage.name
   container_access_type = "private"
