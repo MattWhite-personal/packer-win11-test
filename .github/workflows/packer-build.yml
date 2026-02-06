@@ -68,7 +68,7 @@ jobs:
                   version: ${{ env.PACKER_VERSION }}
 
             - name: Azure Login (Federated)
-              uses: azure/login@v1
+              uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5 # v2.3.0
               with:
                   client-id: ${{ secrets.AZURE_CLIENT_ID }}
                   tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -91,18 +91,25 @@ jobs:
             - name: Extract managed image id from packer manifest
               id: extract_image
               run: |
-                  if [ ! -f packer-manifest.json ]; then
-                    echo "packer-manifest.json not found, attempting to locate manifest..."
+                  # Look for packer manifest in the workflow root or the packer/ subdirectory
+                  if [ -f packer-manifest.json ]; then
+                    MANIFEST="packer-manifest.json"
+                  elif [ -f packer/packer-manifest.json ]; then
+                    MANIFEST="packer/packer-manifest.json"
+                  else
+                    echo "packer-manifest.json not found in root or packer/"
                     ls -la
                     exit 1
                   fi
-                  IMAGE_ID=$(jq -r '.builds[].artifact_id' packer-manifest.json | grep -o 'managed_image_id=[^ ]*' | sed 's/managed_image_id=//')
+                  echo "Using manifest: $MANIFEST"
+                  IMAGE_ID=$(jq -r '.builds[].artifact_id' "$MANIFEST" | grep -o 'managed_image_id=[^ ]*' | sed 's/managed_image_id=//')
                   if [ -z "$IMAGE_ID" ]; then
-                    echo "Failed to extract managed image id from packer-manifest.json"
-                    cat packer-manifest.json
+                    echo "Failed to extract managed image id from $MANIFEST"
+                    cat "$MANIFEST"
                     exit 1
                   fi
                   echo "managed_image_id=$IMAGE_ID" >> $GITHUB_OUTPUT
+                  echo "manifest_path=$MANIFEST" >> $GITHUB_OUTPUT
 
             - name: Publish managed image to Shared Image Gallery
               if: steps.extract_image.outputs.managed_image_id != ''
@@ -128,6 +135,7 @@ jobs:
                   path: |
                       crash.log
                       packer-manifest.json
+                      packer/packer-manifest.json
 
             - name: Notify Success
               if: success()
