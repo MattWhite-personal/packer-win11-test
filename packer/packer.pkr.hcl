@@ -28,9 +28,16 @@ build {
   name    = "win11-image"
   sources = ["source.azure-arm.win11"]
 
+  provisioner "powershell" {
+    inline = [
+      "New-Item -Path 'C:\\build-scripts' -ItemType Directory -Force"
+    ]
+  }
+
   provisioner "file" {
-    source      = "packer/scripts"
-    destination = "C:\\build-scripts"
+    # use explicit relative path from repo root where packer is executed
+    source      = "./packer/scripts/"
+    destination = "C:\\build-scripts\\"
   }
 
   provisioner "powershell" {
