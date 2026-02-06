@@ -36,7 +36,7 @@ jobs:
               uses: actions/checkout@v4
 
             - name: Setup Packer
-              uses: hashicorp/setup-packer@main
+              uses: hashicorp/setup-packer@v2
               with:
                   version: ${{ env.PACKER_VERSION }}
 
@@ -47,10 +47,10 @@ jobs:
               run: packer fmt -check packer/
 
             - name: Packer Validate
-              env:
-                  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-                  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-                  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+              #env:
+                  #ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+                  #ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+                  #ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
               run: packer validate packer/packer.pkr.hcl
 
     build:
@@ -63,7 +63,7 @@ jobs:
               uses: actions/checkout@v4
 
             - name: Setup Packer
-              uses: hashicorp/setup-packer@main
+              uses: hashicorp/setup-packer@v2
               with:
                   version: ${{ env.PACKER_VERSION }}
 
@@ -79,12 +79,12 @@ jobs:
               run: packer init packer/packer.pkr.hcl
 
             - name: Build Image with Packer
-              env:
-                  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-                  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-                  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-                  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-                  ARM_USE_OIDC: "true"
+              #env:
+                  #ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+                  #ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+                  #ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+                  #ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+                  #ARM_USE_OIDC: "true"
               run: |
                   packer build packer/packer.pkr.hcl
 
