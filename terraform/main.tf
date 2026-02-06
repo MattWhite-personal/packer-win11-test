@@ -29,7 +29,7 @@ resource "azurerm_resource_group" "image-gallery" {
 }
 
 resource "azurerm_shared_image_gallery" "gallery" {
-  name                = "sig-whitefam-gallery"
+  name                = "sig_whitefam_gallery"
   resource_group_name = azurerm_resource_group.image-gallery.name
   location            = azurerm_resource_group.image-gallery.location
   description         = "Shared Image Gallery for Win11 golden image"
