@@ -52,6 +52,6 @@ build {
   }
 
   provisioner "powershell" {
-    script = "C:\\build-scripts\\install-office.ps1"
+    script = "./packer/scripts/install-office.ps1"
   }
 }
