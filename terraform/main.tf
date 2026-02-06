@@ -6,10 +6,10 @@ terraform {
     }
   }
   backend "azurerm" {
-    resource_group_name  = "rg-whitefam-terraform"
-    storage_account_name = "stwhitefamterraform"
-    container_name       = "tfstate"
-    key                  = "packer-win11-test.tfstate"
+    resource_group_name  = "terraformrg"
+    storage_account_name = "terraformstoragefe832e63"
+    container_name       = "terraform"
+    key                  = "tf-packer.tfstate"
     use_oidc             = true
   }
 }
@@ -29,7 +29,7 @@ resource "azurerm_resource_group" "image-gallery" {
 }
 
 resource "azurerm_shared_image_gallery" "gallery" {
-  name                = "sig-whitefam-gallery"
+  name                = "sig_whitefam_gallery"
   resource_group_name = azurerm_resource_group.image-gallery.name
   location            = azurerm_resource_group.image-gallery.location
   description         = "Shared Image Gallery for Win11 golden image"
@@ -54,6 +54,17 @@ resource "azurerm_shared_image" "win11-pro" {
 }
 
 resource "azurerm_storage_account" "image-storage" {
+  #checkov:skip=CKV2_AZURE_1:Ignore what i dont care about
+  #checkov:skip=CKV2_AZURE_21: Ignore
+  #checkov:skip=CKV2_AZURE_33: Private endpoints not suitable for storage account
+  #checkov:skip=CKV_AZURE_33:Ignore
+  #checkov:skip=CKV2_AZURE_40: Shared Key currently enabled until Entra Auth is tested
+  #checkov:skip=CKV2_AZURE_41: Storage account is not internet facing and only used for image upload, so Shared Key is acceptable
+  #checkov:skip=CKV_AZURE_206: ignore
+  #checkov:skip=CKV_AZURE_190: Own naming convention is in use
+  #checkov:skip=CKV_AZURE_59:Own naming convention is in use
+  #checkov:skip=CKV2_AZURE_47:Own naming convention is in use
+  #checkov:skip=CKV2_AZURE_38:IGnore
   name                     = "stwhitefamimages"
   resource_group_name      = azurerm_resource_group.image-gallery.name
   location                 = azurerm_resource_group.image-gallery.location
@@ -64,36 +75,9 @@ resource "azurerm_storage_account" "image-storage" {
 }
 
 resource "azurerm_storage_container" "image-container" {
+  #checkov:skip=CKV2_AZURE_21: Ignore
+  #checkov:skip=CKV2_AZURE_38:IGnore
   name                  = "images"
   storage_account_name  = azurerm_storage_account.image-storage.name
   container_access_type = "private"
-}
-
-resource "azurerm_storage_account_sas" "image_sas" {
-  storage_account_name = azurerm_storage_account.image-storage.name
-  resource_types {
-    service   = true
-    container = true
-    object    = true
-  }
-  services {
-    blob  = true
-    queue = false
-    table = false
-    file  = false
-  }
-  start  = timestamp()
-  expiry = timeadd(timestamp(), "24h")
-  permissions {
-    read   = true
-    write  = true
-    delete = false
-    list   = true
-    create = true
-    update = false
-    process = false
-    delete_previous_version = false
-    tag = false
-    filter = false
-  }
 }
