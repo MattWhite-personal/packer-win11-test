@@ -48,9 +48,9 @@ jobs:
 
             - name: Packer Validate
               env:
-                  ARM_CLIENT_ID: "placeholder"
-                  ARM_TENANT_ID: "placeholder"
-                  ARM_SUBSCRIPTION_ID: "placeholder"
+                  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+                  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+                  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
               run: packer validate packer/packer.pkr.hcl
 
     build:
