@@ -81,32 +81,3 @@ resource "azurerm_storage_container" "image-container" {
   storage_account_name  = azurerm_storage_account.image-storage.name
   container_access_type = "private"
 }
-
-resource "azurerm_storage_account_sas" "image_sas" {
-  storage_account_name = azurerm_storage_account.image-storage.name
-  resource_types {
-    service   = true
-    container = true
-    object    = true
-  }
-  services {
-    blob  = true
-    queue = false
-    table = false
-    file  = false
-  }
-  start  = timestamp()
-  expiry = timeadd(timestamp(), "24h")
-  permissions {
-    read                    = true
-    write                   = true
-    delete                  = false
-    list                    = true
-    create                  = true
-    update                  = false
-    process                 = false
-    delete_previous_version = false
-    tag                     = false
-    filter                  = false
-  }
-}
