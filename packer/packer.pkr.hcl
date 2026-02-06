@@ -17,6 +17,7 @@ source "azure-arm" "win11" {
   # use the OIDC token exchange instead of client credentials.
 
   location                          = "UK South"
+  os_type                           = "Windows"
   vm_size                           = "Standard_D4s_v3"
   image_publisher                   = "MicrosoftWindowsDesktop"
   image_offer                       = "windows-11"

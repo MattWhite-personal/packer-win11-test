@@ -48,9 +48,9 @@ jobs:
 
             - name: Packer Validate
               env:
-                  PKR_VAR_storage_account_name: "placeholder"
-                  PKR_VAR_storage_container_name: "placeholder"
-                  PKR_VAR_storage_sas_url: "placeholder"
+                  ARM_CLIENT_ID: "placeholder"
+                  ARM_TENANT_ID: "placeholder"
+                  ARM_SUBSCRIPTION_ID: "placeholder"
               run: packer validate packer/packer.pkr.hcl
 
     build:
