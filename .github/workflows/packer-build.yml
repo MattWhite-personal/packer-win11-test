@@ -83,6 +83,7 @@ jobs:
                   ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
                   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
                   ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+                  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
                   ARM_USE_OIDC: "true"
               run: |
                   packer build packer/packer.pkr.hcl
@@ -121,7 +122,7 @@ jobs:
 
             - name: Upload Build Logs
               if: always()
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
               with:
                   name: packer-build-logs
                   path: |
