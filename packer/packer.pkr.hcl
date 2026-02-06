@@ -4,6 +4,10 @@ packer {
       version = ">= 1.0.0"
       source  = "github.com/hashicorp/azure"
     }
+    windows-update = {
+      version = "0.17.2"
+      source  = "github.com/rgl/windows-update"
+    }
   }
 }
 
@@ -28,6 +32,13 @@ build {
   name    = "win11-image"
   sources = ["source.azure-arm.win11"]
 
+  # Windows updates
+  provisioner "windows-update" {
+    filters         = ["exclude:$_.Title -like '*Preview*'", "include:$true"]
+    search_criteria = "IsInstalled=0"
+    update_limit    = 25
+  }
+
   provisioner "powershell" {
     inline = [
       "New-Item -Path 'C:\\build-scripts' -ItemType Directory -Force"
@@ -41,10 +52,6 @@ build {
   }
 
   provisioner "powershell" {
-    inline = [
-      "Set-ExecutionPolicy Bypass -Scope Process -Force",
-      "C:\\build-scripts\\install-updates.ps1",
-      "C:\\build-scripts\\install-office.ps1"
-    ]
+    script = "C:\\build-scripts\\install-office.ps1"
   }
 }
