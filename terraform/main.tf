@@ -85,15 +85,15 @@ resource "azurerm_storage_account_sas" "image_sas" {
   start  = timestamp()
   expiry = timeadd(timestamp(), "24h")
   permissions {
-    read   = true
-    write  = true
-    delete = false
-    list   = true
-    create = true
-    update = false
-    process = false
+    read                    = true
+    write                   = true
+    delete                  = false
+    list                    = true
+    create                  = true
+    update                  = false
+    process                 = false
     delete_previous_version = false
-    tag = false
-    filter = false
+    tag                     = false
+    filter                  = false
   }
 }
