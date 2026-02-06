@@ -12,7 +12,7 @@ source "azure-arm" "win11" {
   subscription_id = "$${env ARM_SUBSCRIPTION_ID}"
   client_id       = "$${env ARM_CLIENT_ID}"
   # For GitHub Actions OIDC authentication do NOT provide a client secret here.
-  # When running in Actions set ARM_USE_OIDC=true and ensure the Azure AD
+  # When running. in Actions set ARM_USE_OIDC=true and ensure the Azure AD
   # application has a federated credential for the repository; Packer will
   # use the OIDC token exchange instead of client credentials.
 
