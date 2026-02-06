@@ -36,14 +36,14 @@ build {
 
   provisioner "file" {
     source      = "scripts"
-    destination = "C:\\\\build-scripts"
+    destination = "C:\build-scripts"
   }
 
   provisioner "powershell" {
     inline = [
       "Set-ExecutionPolicy Bypass -Scope Process -Force",
-      "C:\\\\build-scripts\\\\install-updates.ps1",
-      "C:\\\\build-scripts\\\\install-office.ps1"
+      "C:\build-scripts\install-updates.ps1",
+      "C:\build-scripts\install-office.ps1"
     ]
   }
 }
