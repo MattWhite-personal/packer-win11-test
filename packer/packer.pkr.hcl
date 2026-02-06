@@ -35,7 +35,7 @@ build {
   sources = ["source.azure-arm.win11"]
 
   provisioner "file" {
-    source      = "scripts"
+    source      = "packer/scripts"
     destination = "C:\\build-scripts"
   }
 
