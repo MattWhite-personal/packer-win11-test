@@ -40,6 +40,9 @@ jobs:
               with:
                   version: ${{ env.PACKER_VERSION }}
 
+            - name: Packer Init
+              run: packer init packer/packer.pkr.hcl
+
             - name: Packer Format Check
               run: packer fmt -check packer/
 
@@ -54,6 +57,7 @@ jobs:
         runs-on: ubuntu-latest
         name: Build Packer Image
         needs: validate
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
