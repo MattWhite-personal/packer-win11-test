@@ -14,5 +14,3 @@ output "image_storage_primary_blob_endpoint" {
   value     = azurerm_storage_account.image-storage.primary_blob_endpoint
   sensitive = false
 }
-
-data "azurerm_client_config" "current" {}
