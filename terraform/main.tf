@@ -81,3 +81,5 @@ resource "azurerm_storage_container" "image-container" {
   storage_account_name  = azurerm_storage_account.image-storage.name
   container_access_type = "private"
 }
+
+data "azurerm_client_config" "current" {}
