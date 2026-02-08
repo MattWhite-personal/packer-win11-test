@@ -25,7 +25,7 @@ permissions:
     contents: read
 
 env:
-    PACKER_VERSION: "1.9.4"
+    PACKER_VERSION: "1.15.0"
 
 jobs:
     validate:
@@ -79,12 +79,6 @@ jobs:
               run: packer init packer/packer.pkr.hcl
 
             - name: Build Image with Packer
-              #env:
-                  #ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-                  #ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-                  #ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-                  #ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-                  #ARM_USE_OIDC: "true"
               run: |
                   packer build packer/packer.pkr.hcl
 
