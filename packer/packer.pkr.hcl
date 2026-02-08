@@ -1,7 +1,7 @@
 packer {
   required_plugins {
     azure = {
-      version = ">= 1.0.0"
+      version = ">= 2.5.2"
       source  = "github.com/hashicorp/azure"
     }
     windows-update = {
@@ -22,20 +22,17 @@ locals {
 source "azure-arm" "win11-25h2" {
   use_azure_cli_auth = true
 
-  location        = "UK South"
-  os_type         = "Windows"
-  vm_size         = "Standard_D4s_v3"
-  image_publisher = "MicrosoftWindowsDesktop"
-  image_offer     = "windows-11"
-  image_sku       = "win11-25h2-pro"
-  communicator    = "winrm"
-  winrm_use_ssl   = true
-  winrm_insecure  = true
-  winrm_timeout   = "1h"
-
-  # ---------- Managed Image (optional but fine to keep)
-  #managed_image_resource_group_name = "rg-whitefam-image-gallery"
-  #managed_image_name                = "win11-custom-{{timestamp}}"
+  location                  = "UK South"
+  os_type                   = "Windows"
+  vm_size                   = "Standard_D4s_v6"
+  image_publisher           = "MicrosoftWindowsDesktop"
+  image_offer               = "windows-11"
+  image_sku                 = "win11-25h2-pro"
+  communicator              = "winrm"
+  winrm_use_ssl             = true
+  winrm_insecure            = true
+  winrm_timeout             = "4h"
+  boot_diag_storage_account = "stwhitefamimages"
 
   # ---------- Azure Compute Gallery output
   shared_image_gallery_destination {
@@ -73,10 +70,6 @@ build {
     script           = "./packer/scripts/get-locale-versions.ps1"
     environment_vars = ["ExecutionStage=pre"]
   }
-  #provisioner "file" {
-  #  source      = "C:\\build-scripts\\locale-versions-pre.json"
-  #  destination = "./packer/scripts/locale-versions-pre.json"
-  #}
 
   # --- Set locale to en-GB and reboot ---
   provisioner "powershell" {
@@ -84,7 +77,7 @@ build {
   }
   provisioner "windows-restart" {
     restart_check_command = "powershell -command \"& {Write-Output 'restarted.'}\""
-    restart_timeout = "60m"
+    restart_timeout       = "60m"
   }
 
   provisioner "powershell" {
@@ -97,24 +90,20 @@ build {
   }
 
   #Windows updates
-  provisioner "windows-update" {
-    filters         = ["exclude:$_.Title -like '*Preview*'", "include:$true"]
-    search_criteria = "IsInstalled=0"
-    update_limit    = 25
-  }
+  #provisioner "windows-update" {
+  #  filters         = ["exclude:$_.Title -like '*Preview*'", "include:$true"]
+  #  search_criteria = "IsInstalled=0"
+  #  update_limit    = 25
+  #}
 
   # Get Current OS status post deployment and update results
   provisioner "powershell" {
     script           = "./packer/scripts/get-locale-versions.ps1"
-    environment_vars = ["ExecutionStage=pre"]
+    environment_vars = ["ExecutionStage=post"]
   }
-  #provisioner "file" {
-  #  source      = "C:\\build-scripts\\locale-versions-post.json"
-  #  destination = "./packer/scripts/locale-versions-post.json"
-  #}
 
   post-processor "manifest" {
-    output        = "packer-manifest.json"
-    strip_path    = true
+    output     = "packer-manifest.json"
+    strip_path = true
   }
 }
