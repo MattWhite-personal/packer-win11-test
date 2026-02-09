@@ -1,4 +1,4 @@
-﻿name: "Terraform Configuration Drift Detection"
+name: "Terraform Configuration Drift Detection"
 
 on:
   workflow_dispatch:
@@ -41,7 +41,7 @@ jobs:
     steps:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       # Install the latest version of the Terraform CLI
       - name: Setup Terraform
