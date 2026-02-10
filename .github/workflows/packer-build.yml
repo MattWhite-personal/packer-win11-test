@@ -33,7 +33,7 @@ jobs:
         name: Validate Packer Configuration
         steps:
             - name: Checkout code
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
 
             - name: Setup Packer
               uses: hashicorp/setup-packer@v3
@@ -60,7 +60,7 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         steps:
             - name: Checkout code
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
 
             - name: Setup Packer
               uses: hashicorp/setup-packer@v3
