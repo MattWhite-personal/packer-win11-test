@@ -1,3 +1,4 @@
+/*
 output "resource_group_name" {
   value = azurerm_resource_group.image-gallery.name
 }
@@ -14,3 +15,4 @@ output "image_storage_primary_blob_endpoint" {
   value     = azurerm_storage_account.image-storage.primary_blob_endpoint
   sensitive = false
 }
+*/
