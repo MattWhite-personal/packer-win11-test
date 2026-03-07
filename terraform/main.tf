@@ -19,6 +19,7 @@ provider "azurerm" {
   use_oidc = true
 }
 
+/*
 resource "azurerm_resource_group" "image-gallery" {
   name     = "rg-whitefam-image-gallery"
   location = "uksouth"
@@ -81,3 +82,4 @@ resource "azurerm_storage_container" "image-container" {
   storage_account_name  = azurerm_storage_account.image-storage.name
   container_access_type = "private"
 }
+*/
